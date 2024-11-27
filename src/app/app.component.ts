@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import DashboardComponent from './dashboard/dashboard.component';
+import { DashboardComponent } from './dashboard/dashboard.component'; // Assurez-vous que le chemin est correct
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,7 @@ import DashboardComponent from './dashboard/dashboard.component';
   imports: [
     CommonModule, 
     RouterOutlet,
-    DashboardComponent
+    DashboardComponent  // Ajoutez DashboardComponent ici
   ],
   template: `
     <div class="app-container">
@@ -25,4 +25,4 @@ import DashboardComponent from './dashboard/dashboard.component';
     }
   `]
 })
-export class AppComponent {} 
+export class AppComponent {}

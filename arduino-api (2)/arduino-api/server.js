@@ -50,7 +50,7 @@ function getDayOfWeek() {
 }
 
 const arduinoPort = new SerialPort({
-  path: '/dev/ttyUSB0',
+  path: '/dev/ttyUSB1',
   baudRate: 9600,
 });
 
@@ -99,10 +99,10 @@ async function saveDataToDB(hour) {
 
 // Heures spécifiques à surveiller
 let dataForSpecificHours = {
-  '12h10': { temperature: null, humidity: null },
-  '12h11': { temperature: null, humidity: null },
-  '12h12': { temperature: null, humidity: null },
+  '08h30': { temperature: null, humidity: null },
+  '08h31': { temperature: null, humidity: null }
 };
+
 
 function checkAndSaveData() {
   const now = new Date();
