@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HourlyDataComponent } from './hourly-data.component';
+import { FanComponent } from './fan.component';
 
-describe('HourlyDataComponent', () => {
-  let component: HourlyDataComponent;
-  let fixture: ComponentFixture<HourlyDataComponent>;
+describe('FanComponent', () => {
+  let component: FanComponent;
+  let fixture: ComponentFixture<FanComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HourlyDataComponent]
+      imports: [FanComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HourlyDataComponent);
+    fixture = TestBed.createComponent(FanComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

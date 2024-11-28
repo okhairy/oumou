@@ -1,0 +1,82 @@
+/* .spinner {
+    text-align: center;
+    font-size: 1.2em;
+    margin: 20px 0;
+  }
+  
+  .error {
+    color: red;
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .data-table th, .data-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .data-table th {
+    background-color: #f4f4f4;
+  }
+  
+  button {
+    margin-top: 20px;
+  }
+   */
+   .dashboard {
+  padding: 20px;
+  background-color: #f0f4ff;
+}
+
+.dashboard {
+  padding: 20px;
+  background-color: #f0f4ff;
+  display: flex; /* Utiliser flex pour centrer le contenu */
+  justify-content: center; /* Centre horizontalement */
+  align-items: center; /* Centre verticalement */
+  flex-direction: column; /* Aligne le contenu en colonne */
+ 
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: row; /* Aligne les cartes horizontalement */
+  gap: 20px; /* Espacement entre les cartes */
+  overflow-x: auto; /* Permet de faire défiler horizontalement si nécessaire */
+  justify-content: center; /* Centre les cartes horizontalement */
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 200px; /* Largeur fixe des cartes */
+  text-align: center;
+}
+
+.card-header {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.card-body p {
+  margin: 5px 0;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+}

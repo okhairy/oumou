@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common'; // Importez CommonModule
 import { ArduinoDataService, SensorData } from '/home/oumoul-khairy/oumou/src/app/services/arduino-data.service';
 
 @Component({
   selector: 'app-current-sensor-data',
   standalone: true,
+  imports: [CommonModule], // Ajoutez CommonModule ici
   template: `
-    <div class="sensor-card">
-      <div class="sensor-background">
-        <div class="sensor-overlay">
-          <div class="sensor-data">
-            <div>
-              <span class="label">Température :</span>
-              <span class="value">{{ currentTemperature }}°C</span>
-            </div>
-            <div>
-              <span class="label">Humidité :</span>
-              <span class="value">{{ currentHumidity }}%</span>
-            </div>
+    <div class="sensor-card" [ngStyle]="{ 'background-image': 'url(' + backgroundImage + ')' }">
+      <div class="sensor-overlay">
+        <div class="sensor-data">
+          <div>
+            <span class="label">Température :</span>
+            <span class="value">{{ currentTemperature }}°C</span>
+          </div>
+          <div>
+            <span class="label">Humidité :</span>
+            <span class="value">{{ currentHumidity }}%</span>
           </div>
         </div>
       </div>
@@ -26,16 +26,10 @@ import { ArduinoDataService, SensorData } from '/home/oumoul-khairy/oumou/src/ap
     .sensor-card {
       position: relative;
       width: 100%; /* La carte occupe la largeur disponible */
-      height: 150px; /* Gardez la hauteur initiale (ajustez si nécessaire) */
+      height: 250px; /* Augmentez la hauteur pour une meilleure visibilité */
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .sensor-background {
-      width: 100%;
-      height: 100%;
-      background-image: url('/assets/sun.png'); /* Chemin vers l'image */
       background-size: cover; /* L'image s'adapte pour remplir la carte */
       background-position: center; /* Centre l'image */
     }
@@ -55,24 +49,25 @@ import { ArduinoDataService, SensorData } from '/home/oumoul-khairy/oumou/src/ap
     .sensor-data {
       color: white;
       text-align: center;
-      font-size: 1.2rem; /* Taille réduite pour correspondre à la hauteur */
+      font-size: 1.5rem; /* Augmentez la taille des données pour plus de visibilité */
       font-weight: bold;
     }
 
     .label {
       display: block;
-      font-size: 1rem; /* Taille réduite pour correspondre à l'espace */
+      font-size: 1.2rem; /* Augmentez la taille de la label */
       margin-bottom: 2px;
     }
 
     .value {
-      font-size: 1.4rem; /* Légèrement plus grand pour mettre en valeur les données */
+      font-size: 1.6rem; /* Augmentez la taille de la valeur */
     }
   `]
 })
 export class CurrentSensorDataComponent implements OnInit {
   currentTemperature: number = 0;
   currentHumidity: number = 0;
+  backgroundImage: string = '/assets/sun.png'; // Image par défaut
 
   constructor(private arduinoDataService: ArduinoDataService) {}
 
@@ -83,10 +78,18 @@ export class CurrentSensorDataComponent implements OnInit {
   loadCurrentSensorData() {
     this.arduinoDataService.getTemperature().subscribe((data: SensorData) => {
       this.currentTemperature = data.value;
+      this.updateBackgroundImage(); // Mettez à jour l'image de fond
     });
     this.arduinoDataService.getHumidity().subscribe((data: SensorData) => {
       this.currentHumidity = data.value;
     });
   }
-}
 
+  private updateBackgroundImage() {
+    if (this.currentTemperature > 27) {
+      this.backgroundImage = '/assets/copy.png'; // Image lorsque la température est supérieure à 27°
+    } else {
+      this.backgroundImage = '/assets/sun.png'; // Image par défaut
+    }
+  }
+}

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component'; // Assurez-vous que le chemin est correct
 
+
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -14,6 +16,8 @@ import { DashboardComponent } from './dashboard/dashboard.component'; // Assurez
   template: `
     <div class="app-container">
       <router-outlet></router-outlet>
+     
+
     </div>
   `,
   styles: [`
