@@ -1,3 +1,8 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
 html, body {
   height: 100%; /* Assurez-vous que le body et html prennent toute la hauteur */
   margin: 0;    /* Supprimez les marges par défaut */
@@ -40,7 +45,7 @@ nav ul li a {
 
 .logout-btn {
   margin-top: auto; /* Pousse le bouton vers le bas */
-  background-color: #ff4d4d; /* Couleur pour le bouton de déconnexion */
+  background-color: #50ABE4; /* Couleur pour le bouton de déconnexion */
   color: white;
   border: none;
   padding: 10px;
@@ -51,9 +56,9 @@ nav ul li a {
 .dashboard-content {
   flex: 1; /* Prend tout l'espace disponible */
   padding: 20px;
-  overflow-y: auto; /* Permet le défilement vertical */
   width: 100%; /* Assure que le contenu prend toute la largeur */
   background-color: #f0f4ff;
+  overflow-y: auto; /* Permet de faire défiler le contenu si nécessaire */
 }
 
 .header {
@@ -115,6 +120,10 @@ nav ul li a {
 @media (max-width: 768px) {
   .card {
     flex: 1 1 calc(50% - 20px); /* Deux cartes par ligne sur petits écrans */
+  }
+
+  .dashboard-container {
+    flex-direction: column; /* Colonne sur petits écrans */
   }
 }
 

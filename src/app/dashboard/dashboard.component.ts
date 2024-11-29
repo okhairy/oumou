@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+ import { Component, OnInit } from '@angular/core';
 import { ArduinoDataService } from '/home/oumoul-khairy/oumou/src/app/services/arduino-data.service';
 import { DataService } from '/home/oumoul-khairy/oumou/src/app/data.service';  
 import { CurrentSensorDataComponent } from '/home/oumoul-khairy/oumou/src/app/components/current-sensor-data/current-sensor-data.component';
@@ -24,11 +24,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
         <div class="logo">
           <img src="assets/logo.png" alt="Yakar Logo" />
         </div>
-        <nav>
-          <ul>
-            <li><a href="#">Dashboard</a></li>
-          </ul>
-        </nav>
+       
         <button class="logout-btn">Déconnexion</button>
       </aside>
 
@@ -102,4 +98,4 @@ export class DashboardComponent implements OnInit {
       });
     }
   }
-}
+} 

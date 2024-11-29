@@ -22,7 +22,7 @@
 
 <button (click)="fetchData()">Rafraîchir les données</button>
  -->
-<div class="dashboard">
+<!-- <div class="dashboard">
   <h1>Dashboard</h1>
   <div class="cards-container">
     <div *ngFor="let entry of data" class="card">
@@ -38,4 +38,35 @@
 
   <div *ngIf="loading" class="loading">Chargement des données...</div>
   <div *ngIf="error" class="error">{{ error }}</div>
+</div> -->
+<div class="dashboard">
+  <h1>heure specifiques</h1>
+  
+  <div class="cards-container">
+    <!-- Afficher les cartes avec données disponibles -->
+    <div *ngFor="let entry of data" class="card">
+      <div class="card-header">
+        <h2>{{ entry.hour }}</h2>
+      </div>
+      <div class="card-body">
+        <p>Température: <strong>{{ entry.temperature }}°C</strong></p>
+        <p>Humidité: <strong>{{ entry.humidity }}%</strong></p>
+      </div>
+    </div>
+
+    <!-- Afficher des cartes vides pour les heures spécifiques sans données -->
+    <div *ngFor="let hour of specificHours">
+      <div *ngIf="!hasDataForHour(hour)" class="card">
+        <div class="card-header">
+          <h2>{{ hour }}</h2>
+        </div>
+        <div class="card-body">
+          <p>Aucune donnée disponible.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Afficher un message de chargement -->
+  <div *ngIf="loading" class="loading">Chargement des données...</div>
 </div>
