@@ -52,7 +52,9 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./data-display.component.css']
 })
 export class DataDisplayComponent implements OnInit {
+  
   data: { hour: string, temperature: number, humidity: number, date: string }[] = [];
+  
   specificHours: string[] = ['12h10', '12h11', '12h12'];
   loading = false;
 

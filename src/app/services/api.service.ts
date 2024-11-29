@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:3002/api/data'; // URL de votre API
+  private baseUrl = 'http://localhost:5000/api'; // Remplacez par l'URL de votre API
 
   constructor(private http: HttpClient) {}
 
@@ -20,51 +21,85 @@ export class ApiService {
   // -------- UTILISATEURS --------
 
   // Authentifier un utilisateur par email et mot de passe
-  authenticateUser(email: string, password: string): Observable<any> {
-    return this.http.post(`http://localhost:3002/api/auth/login`, { email, password })
+  authenticateUser(email: string, motDePasse: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/user/authentifier`, { email, motDePasse })
       .pipe(catchError(this.handleError));
   }
 
-  // S'inscrire un nouvel utilisateur
-  createUser(user: any): Observable<any> {
-    return this.http.post(`http://localhost:3002/api/auth/signup`, user)
+  // Authentifier un utilisateur par code secret
+  authenticateByCodeSecret(codeSecret: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/user/authentifier/code-secret`, { codeSecret })
       .pipe(catchError(this.handleError));
   }
-// Authentifier par code secret
-authenticateByCodeSecret(code: string): Observable<any> {
-  return this.http.post(`${this.baseUrl}/authenticate-code`, { code }) // Assurez-vous que l'URL est correcte
-    .pipe(catchError(this.handleError));
-}
+
+  // Créer un nouvel utilisateur (admin uniquement)
+  createUser(user: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/user/inscrire`, user, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  // Mettre à jour un utilisateur existant (admin uniquement)
+  updateUser(userId: string, user: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/user/update/${userId}`, user, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  // Supprimer un utilisateur par ID (admin uniquement)
+  deleteUser(userId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/user/supprimer/${userId}`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  // Récupérer tous les utilisateurs (admin uniquement)
+  getAllUsers(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/user/get-all`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  // Récupérer un utilisateur par ID
+  getUserById(userId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/user/get/${userId}`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
   // -------- COLLECTES --------
 
-  // Récupérer toutes les collectes
-  getCollectes(): Observable<any> {
-    return this.http.get(`${this.baseUrl}`, { headers: this.getAuthHeaders() })
+  // Récupérer toutes les collectes avec pagination et filtres (dates)
+  getCollectes(page: number, limit: number, startDate?: string, endDate?: string): Observable<any> {
+    let params: any = { page, limit };
+    if (startDate) params.startDate = startDate;
+    if (endDate) params.endDate = endDate;
+
+    return this.http.get(`${this.baseUrl}/collecte/get-all`, { params, headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
 
   // Créer une nouvelle collecte
   createCollecte(collecte: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}`, collecte, { headers: this.getAuthHeaders() })
+    return this.http.post(`${this.baseUrl}/collecte/creer`, collecte, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
 
   // Récupérer une collecte spécifique par ID
   getCollecteById(collecteId: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/${collecteId}`, { headers: this.getAuthHeaders() })
+    return this.http.get(`${this.baseUrl}/collecte/get/${collecteId}`, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
 
-  // Récupérer la moyenne journalière
-  getDailyAverage(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/daily-averages`, { headers: this.getAuthHeaders() })
-      .pipe(catchError(this.handleError));
+  // Récupérer la moyenne journalière (température et humidité)
+  getDailyAverage(date: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/collecte/moyenne-journaliere`, {
+      params: { date },
+      headers: this.getAuthHeaders()
+    }).pipe(catchError(this.handleError));
   }
 
   // Récupérer l'historique hebdomadaire
-  getWeeklyHistory(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/weekly`, { headers: this.getAuthHeaders() })
-      .pipe(catchError(this.handleError));
+  getWeeklyHistory(startDate: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/collecte/historique-hebdomadaire`, {
+      params: { startDate },
+      headers: this.getAuthHeaders()
+    }).pipe(catchError(this.handleError));
   }
 
   // Gestion des erreurs API
@@ -72,8 +107,10 @@ authenticateByCodeSecret(code: string): Observable<any> {
     let errorMessage = 'Une erreur est survenue. Veuillez réessayer.';
     
     // Vérifier si la réponse contient un message d'erreur spécifique
-    if (error.error && error.error.message) {
-      errorMessage = error.error.message;  // Utiliser le message d'erreur spécifique de l'API
+    if (error.error && error.error.error) {
+      errorMessage = error.error.error;  // Utiliser le message d'erreur spécifique de l'API
+    } else if (error.error && error.error.message) {
+      errorMessage = error.error.message;  // Utiliser un autre format possible de l'API
     }
 
     // Retourner un Observable avec le message d'erreur

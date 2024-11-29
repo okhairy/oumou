@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 const { verifyToken, verifyRole } = require('../middlewares/authMiddleware');
+const bcrypt = require('bcrypt');
 
 /**
  * @swagger
@@ -88,8 +89,6 @@ router.post('/authentifier/code-secret', userController.authentifierParCodeSecre
  *   post:
  *     summary: Inscrire un nouvel utilisateur
  *     tags: [User]
- *     security:
- *       - Bearer: []
  *     requestBody:
  *       required: true
  *       content:
@@ -100,15 +99,14 @@ router.post('/authentifier/code-secret', userController.authentifierParCodeSecre
  *               email:
  *                 type: string
  *                 description: Adresse email de l'utilisateur
- *                 example: "nouvelutilisateur@ example.com"
+ *                 example: "nouvelutilisateur@exemple.com"
  *               motDePasse:
  *                 type: string
  *                 description: Mot de passe de l'utilisateur
  *                 example: "motdepasse123"
  *               role:
  *                 type: string
- *                  description: "Rôle de l'utilisateur (ex: admin, utilisateur)"
-
+ *                 description: "Rôle de l'utilisateur (ex: admin, utilisateur)"
  *                 example: "utilisateur"
  *     responses:
  *       201:
@@ -116,8 +114,7 @@ router.post('/authentifier/code-secret', userController.authentifierParCodeSecre
  *       403:
  *         description: Accès interdit, l'utilisateur ne peut pas s'inscrire
  */
-router.post('/inscrire', verifyToken, verifyRole('admin'), userController.inscrireUser);
-
+router.post('/inscrire', userController.inscrireUser);
 
 /**
  * @swagger
@@ -157,7 +154,7 @@ router.post('/inscrire', verifyToken, verifyRole('admin'), userController.inscri
  *       404:
  *         description: Utilisateur non trouvé
  */
-router.put('/update/:id', verifyToken, verifyRole('admin'), userController.updateUser);
+router.put('/update/:id', userController.updateUser);
 
 /**
  * @swagger
